@@ -22,7 +22,7 @@ class ImagePreview:
         self.panel = None
 
         button = tk.Button(self.root, text = "Confirm Focus", command = self.activate_GUI)
-        button.pack(side = "bottom", fill = "both", expand = "yes", padx = 10, pady = 10)
+        button.pack(side = "bottom", fill = "x", expand = "yes", padx = 10, pady = 10)
 
         self.stopEvent = threading.Event()
         self.thread = threading.Thread(target = self.videoLoop, args= ())
