@@ -37,7 +37,7 @@ class ImagePreview:
         try:
             while not self.stopEvent.is_set():
                 self.frame = self.vs.read()
-                self.frame = imutils.resize(self.frame, width = 300)
+                self.frame = imutils.resize(self.frame, width = 500)
                 image = cv2.cvtColor(self.frame, cv2.COLOR_BGR2RGB)
                 image = Image.fromarray(image)
                 image = ImageTk.PhotoImage(image)
@@ -45,7 +45,7 @@ class ImagePreview:
                 if self.panel is None:
                     self.panel = tk.Label(image = image)
                     self.panel.image = image
-                    self.panel.pack(side = "center", padx = 10, pady = 10)
+                    self.panel.pack(side = "top", padx = 10, pady = 10)
                 else:
                     self.panel.configure(image = image)
                     self.panel.image = image
