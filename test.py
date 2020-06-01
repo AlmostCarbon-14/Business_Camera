@@ -95,7 +95,7 @@ def end_session(ignore):
     session += 1
     build_path = ""
     if messagebox.askyesno("Finish", "Would you like to save and shutdown?"):
-        sys.os("sudo shutdown -h now")
+        os.system("sudo shutdown -h now")
     return
 
 
