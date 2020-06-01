@@ -7,7 +7,7 @@ import sys
 from datetime import date
 from os import path
 import tkinter as tk
-import threading
+from tkinter import messagebox
 from tkinter import ttk as ttk
 from tkinter import *
 import tkinter.font as tkFont
@@ -17,6 +17,15 @@ running = True
 pic_index = 0
 event = threading.Event()
 path = ""
+session = 1
+
+def parse_delay():
+    args = parse_interval()
+    if args[1] == "Minutes":
+        return str(int(args[0]) * 60)
+    else:
+        return str(int(args[0]) * 3600)
+
 
 def pad(value):
     if value < 10:
@@ -52,6 +61,7 @@ def system_loop(delay):
     global path, running, pic_index
     if path == "":
         path = build_path()
+    delay = parse_delay()
     while running:
         take_photo(path)
         event.wait(timeout= delay)
@@ -60,7 +70,7 @@ def system_loop(delay):
 def build_path():
     day = datetime.datetime(date.today().year, date.today().month,  date.today().day)
     day = day.strftime("%d-%b-%Y")
-    img_path = "../../../media/usb/Sessions/" + day
+    img_path = "../../../media/usb/Sessions/" + day + "-" + str(session)
     if path.exists(img_path) == False:
         os.system("mkdir " + img_path)
     return img_path
@@ -80,9 +90,12 @@ def parse_interval():
     
 
 def end_session():
-    global running, event
+    global running, event, session, build_path
     running = False
     event.set()
+    session += 1
+    build_path = ""
+    result = messagebox.asyesno("Finish", "Would you like to save and shutdown?")
     return
 
 
