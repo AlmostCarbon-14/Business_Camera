@@ -21,10 +21,11 @@ session = 1
 
 def parse_delay():
     args = parse_interval()
-    if args[1] == "Minutes":
-        return str(int(args[0]) * 60)
-    else:
-        return str(int(args[0]) * 3600)
+    return 5
+   # if args[1] == "Minutes":
+   #     return str(int(args[0]) * 60)
+   # else:
+   #     return str(int(args[0]) * 3600)
 
 
 def pad(value):
@@ -50,6 +51,11 @@ def p_script(lock, path):
         lock.acquire()
         pic_index -= 1
         lock.release()
+        return
+    total = int(img_total.cget("text"))
+    total += 1
+    img_total.config(text= str(total))
+    window.update()
 
 def take_photo(path):
     lock = threading.Lock()
@@ -76,37 +82,29 @@ def build_path():
     return img_path
 
 
-
-            amt -= 1
-            images.config(text= str(amt))
-            window.update()
-    sess = int(sess_box.cget("text"))
-    sess += 1
-    sess_box.config(text= str(sess))
-    window.update()
-
 def parse_interval():
     return interval.get().split(" ")
     
 
-def end_session():
+def end_session(ignore):
     global running, event, session, build_path
     running = False
     event.set()
     session += 1
     build_path = ""
     result = messagebox.asyesno("Finish", "Would you like to save and shutdown?")
+    print("RESULT:", result)
     return
 
 
-def force():
+def force(ignore):
     global path
     if path == "":
         path = build_path()
     take_photo(path)
     return
 
-def decrement():
+def decrement(ignore):
     val = parse_interval()
     interval.delete(0, 'end')
     if val[0] == "15" and val[1] == "Minutes":
@@ -122,7 +120,7 @@ def decrement():
     else:
         interval.set(0, str(int(val[0]) - 1) + " Hours") 
 
-def increment():
+def increment(ignore):
     val = parse_interval()
     interval.delete(0, 'end')
     if val[0] == 45 and val[1] == "Minutes":
