@@ -19,6 +19,8 @@ class ImagePreview:
         self.stopEvent = None
 
         self.root = tk.Tk()
+        self.root.title("Image Preview")
+        self.root.attributes('-zoomed', True)
         self.panel = None
 
         button = tk.Button(self.root, text = "Confirm Focus", command = self.activate_GUI)
@@ -43,7 +45,7 @@ class ImagePreview:
                 if self.panel is None:
                     self.panel = tk.Label(image = image)
                     self.panel.image = image
-                    self.panel.pack(side = "left", padx = 10, pady = 10)
+                    self.panel.pack(side = "center", padx = 10, pady = 10)
                 else:
                     self.panel.configure(image = image)
                     self.panel.image = image
